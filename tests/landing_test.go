@@ -5,8 +5,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	r "go-auth/go-auth-api/routes"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // Test can load/view landing page with appropriate message
@@ -17,7 +18,9 @@ func TestLanding(t *testing.T) {
 	
 	req, _ := http.NewRequest("GET", "/", nil)
 	router.ServeHTTP(w, req)
+	
+	message := `{"message":"Golang Auth API"}`
 
 	assert.Equal(t, 200, w.Code, "Should return HTTP success status code 200")
-	assert.Equal(t, "Golang Auth API", w.Body.String(), "Should return correct body string")
+	assert.Equal(t, message, w.Body.String(), "Should return correct body string")
 }
