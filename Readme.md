@@ -14,7 +14,7 @@ install go modules
 `$ go test ./tests`
 ## API REFERENCE
 ### Landing Route
-| HTTP METHOD | ENDPOINT | HEADERS | PARAMS | STATUS CODE | RESPONSE (JSON) |
+| METHOD | ENDPOINT | HEADERS | PARAMS | STATUS | RESPONSE (JSON) |
 | ----------- | -------- | ------- | ------ | ----------- | -------- |
 | GET    | /        | Content-Type: application/json    | N/A | Success: 200 | {"message": "Golang Auth API"}
 
