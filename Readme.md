@@ -14,7 +14,7 @@ install go modules
 `$ go test ./tests`
 ## API REFERENCE
 ### Landing Route
-| METHOD | ENDPOINT | HEADERS | PARAMS | RESULTS |
+| HTTP METHOD | ENDPOINT | HEADERS | PARAMS | STATUS CODE |
 | ------ | -------- | ------- | ------ | ------- |
-| GET    | /        | N/A     | ------ | Success status code: 200 |
+| GET    | /        | Content-Type: application/json    | ------ | Success: 200 |
 
