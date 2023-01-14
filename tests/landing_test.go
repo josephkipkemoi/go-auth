@@ -1,4 +1,4 @@
-package landing_test
+package tests
 
 import (
 	"net/http"
