@@ -4,4 +4,4 @@
 `$ go test ./tests`
 
 ## How do I start the application?
-`go run main.go`
+`$ go run main.go`
