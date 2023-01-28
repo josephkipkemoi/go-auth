@@ -3,11 +3,11 @@ package tests
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
+
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"go-auth/go-auth-api/env"
 	_ "go-auth/go-auth-api/env"           // load environment variables
@@ -25,22 +25,25 @@ func TestNewUserRegistration(t *testing.T) {
 	w := httptest.NewRecorder()
 	// Create user from User Struct
 	u := h.User{
-		Username: "Joseph",
-		Email: "jkemboe@gmail.com",
-		Password: "123",
-		CreatedAt: time.Now(),
+		PhoneNumber: 700545785,
+		Password: "j",
+	}
+	// User created json message
+	message := h.Message{
+		ValidationErrMsg: "Validation Error: Unproccessable Content",
+		SuccessMessage: "201 Created",
 	}
 	// json encode
-	e, _ := json.Marshal(u)
-	
+	e, err := json.Marshal(&u)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// Return io.Reader to post to route
 	bodyReader := bytes.NewReader(e)
-	 
 	// Send body
 	req, _ := http.NewRequest("POST", url + "api/v1/register", bodyReader)
 	router.ServeHTTP(w, req)
 
-	reqBody, _ := ioutil.ReadAll(req.Body)
-	
-	assert.Equal(t, e, reqBody, "Should have user registratoin fields")
 	assert.Equal(t, 201, w.Code, "Should return 201 status code after user is created")
+	assert.Equal(t, message.SuccessMessage, w.Result().Status, "Should have user created success message" )
 }

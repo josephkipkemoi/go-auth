@@ -1,7 +1,6 @@
 package database
 
 import (
-	"database/sql"
 	"log"
 	"os"
 
@@ -9,35 +8,19 @@ import (
 	_ "go-auth/go-auth-api/env" // load env variables
 
 	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 var dbName string = os.Getenv("DB_NAME")
 
-func Connect() *sql.DB {
-	psqlInfo := env.GetDbEnv()
-
-	db, err := sql.Open("postgres",psqlInfo)
+func Connect() *gorm.DB {
+	dsn := env.GetDbEnv()
+	
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Database Connection Error: %s", err)
 	}
 
 	return db
-}
-
-func Insert(body string) (sql.Result){
-	res, err := Connect().Exec("SELECT * FROM users")
-	if err != nil {
-		log.Fatalf("Error: %v",err)
-		return res
-	}
-	// r,err := 
-	// if err != nil {
-	// 	return 90, err
-	// }
-	return res
-}
-
-func All() {
-	// res := Db.Exec("SELECT * FROM " + dbName)
-	// return res
 }

@@ -3,10 +3,15 @@ package handlers
 import (
 	"net/http"
 	"time"
+
+	"github.com/go-playground/validator/v10"
 )
 
 // Initialize handlers package with pre-configured headers
 var Client *http.Client
+// Initiliaze validation package
+var Validate *validator.Validate
+
 
 // REST Methods Predefined
 func init() {
@@ -24,5 +29,10 @@ func init() {
 	Client = &http.Client{
 		Transport: tr,
 	}
+
+}
+
+func main(){
+	Validate =	validator.New()
 
 }

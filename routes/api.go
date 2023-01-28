@@ -1,18 +1,18 @@
 package routes
 
-import(
-	 "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
 
-	 l "go-auth/go-auth-api/handlers/landing"
-	 auth "go-auth/go-auth-api/handlers/auth"
+	auth "go-auth/go-auth-api/handlers/auth"
+	l "go-auth/go-auth-api/handlers/landing"
 
+	_ "go-auth/go-auth-api/handlers"
 )
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
-	// Landing Handler
+
 	r.GET("/", l.LandingHandler)
-	// Auth Handler
 	r.POST("/api/v1/register", auth.RegistrationHandler)
 
 	return r
