@@ -4,19 +4,19 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"math/rand"
 
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"go-auth/go-auth-api/env"
-	_ "go-auth/go-auth-api/env"           // load environment variables
+	"go-auth/go-auth-api/env" // load environment variables
 	h "go-auth/go-auth-api/handlers/auth" // load auth handlers
 	r "go-auth/go-auth-api/routes"        // load routes
+	"go-auth/go-auth-api/utils/faker" // load faker
 
 	"github.com/stretchr/testify/assert"
 )
+
 
 // Test can register new user
 func TestNewUserRegistration(t *testing.T) {
@@ -26,7 +26,7 @@ func TestNewUserRegistration(t *testing.T) {
 	w := httptest.NewRecorder()
 	// Create user from User Struct
 	u := &h.User{
-		PhoneNumber: fakeNumber(),
+		PhoneNumber: faker.PhoneNumber(),
 		Password: "j",
 	}
 	// User created json message
@@ -50,7 +50,3 @@ func TestNewUserRegistration(t *testing.T) {
 	assert.Equal(t, "bearer jwt_token", w.Header().Get("Authorization"), "Should return populated Authorization header if authenticated")
 }
 
-func fakeNumber() int {
-	r := rand.Int()
-	return r
-}

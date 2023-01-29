@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	h "go-auth/go-auth-api/handlers/landing"
+	h "go-auth/go-auth-api/handlers"
 	r "go-auth/go-auth-api/routes"
 
 	"github.com/stretchr/testify/assert"

@@ -29,6 +29,7 @@ type Message struct {
 }
 
 var validate *validator.Validate
+var token string = "jwt_token"
 
 func RegistrationHandler(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
@@ -65,7 +66,7 @@ func RegistrationHandler(c *gin.Context) {
 	}
 	// Data Passed validation
 	// Store to db
-	res := db.Connect().Select("PhoneNumber", "Password", "CreatedAt").Create(&u)
+	res := db.Connect().Create(&u)
 	if res.Error != nil {
 		e, ok := customError(res.Error.Error())
 		if !ok {
@@ -75,8 +76,6 @@ func RegistrationHandler(c *gin.Context) {
 			return
 		}
 	}
-
-	token := "jwt_token"
 
 	c.Header("Authorization", "bearer " + token)
 	
