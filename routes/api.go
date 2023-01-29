@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	auth "go-auth/go-auth-api/handlers/auth"
-	l "go-auth/go-auth-api/handlers/landing"
 
 	_ "go-auth/go-auth-api/handlers"
 )

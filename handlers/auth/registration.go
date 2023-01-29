@@ -75,6 +75,10 @@ func RegistrationHandler(c *gin.Context) {
 			return
 		}
 	}
+
+	token := "jwt_token"
+
+	c.Header("Authorization", "bearer " + token)
 	
 	c.JSON(201, gin.H{
 		"status": vM.SuccessMessage,
@@ -84,6 +88,7 @@ func RegistrationHandler(c *gin.Context) {
 			"isVerified": u.IsVerified,
 			"createdAt": u.CreatedAt,
 		},
+		"token": token,
 	})
 }
 

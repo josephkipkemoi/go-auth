@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 
 	"net/http"
 	"net/http/httptest"
@@ -24,8 +25,8 @@ func TestNewUserRegistration(t *testing.T) {
 
 	w := httptest.NewRecorder()
 	// Create user from User Struct
-	u := h.User{
-		PhoneNumber: 700545785,
+	u := &h.User{
+		PhoneNumber: fakeNumber(),
 		Password: "j",
 	}
 	// User created json message
@@ -45,5 +46,11 @@ func TestNewUserRegistration(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 201, w.Code, "Should return 201 status code after user is created")
-	assert.Equal(t, message.SuccessMessage, w.Result().Status, "Should have user created success message" )
+	assert.Equal(t, message.SuccessMessage, w.Result().Status, "Should contain 'User Created' success/status message" )
+	assert.Equal(t, "bearer jwt_token", w.Header().Get("Authorization"), "Should return populated Authorization header if authenticated")
+}
+
+func fakeNumber() int {
+	r := rand.Int()
+	return r
 }
