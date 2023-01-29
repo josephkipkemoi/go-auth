@@ -58,7 +58,6 @@ func LoginHandler(c *gin.Context) {
 		"user": gin.H{
 			"id": u.ID,
 			"phoneNumber": u.PhoneNumber,
-			"isVerified": u.IsVerified,
 			"createdAt": u.CreatedAt,
 		},
 	})

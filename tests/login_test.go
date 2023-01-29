@@ -25,7 +25,7 @@ func TestUnauthenticatedUserCannotLogin(t *testing.T) {
 	
 	u := &h.User{
 		PhoneNumber: int(user.PhoneNumber),
-		Password: "password",
+		Password: string(user.Password) + "pass",
 	}
 
 	d, err := json.Marshal(u)

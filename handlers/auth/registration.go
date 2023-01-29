@@ -18,8 +18,6 @@ type User struct {
 	ID int64 `json:"id"`
 	PhoneNumber int `json:"phoneNumber" validate:"required"`
 	Password string `json:"password" validate:"required"`
-	IsVerified bool `json:"isVerified"`
-	RememberMe bool `json:"rememberMe"`
 	CreatedAt time.Time `json:"createdAt"`
 }
 
@@ -84,7 +82,6 @@ func RegistrationHandler(c *gin.Context) {
 		"user": gin.H{
 			"id": u.ID,
 			"phoneNumber": u.PhoneNumber,
-			"isVerified": u.IsVerified,
 			"createdAt": u.CreatedAt,
 		},
 		"token": token,
