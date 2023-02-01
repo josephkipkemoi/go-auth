@@ -2,36 +2,33 @@ package auth
 
 import (
 	"encoding/json"
-	// "log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	db "go-auth/go-auth-api/database"
+	// db "go-auth/go-auth-api/database"
+	"go-auth/go-auth-api/models"
 )
 
 type LoginInput struct {
-	PhoneNumber int `json:"phoneNumber"`
+	PhoneNumber int64 `json:"phoneNumber"`
 	Password string `json:"password"`
 }
 
 func LoginHandler(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	
-	u := &User{}
+	u := &models.User{}
 	i := &LoginInput{}
 
 	d := json.NewDecoder(c.Request.Body)
 	err := d.Decode(i)
 	if err != nil {
-		e, ok := customError(err.Error())
-		if !ok {
-			c.JSON(http.StatusUnprocessableEntity, gin.H{
-				"error": e,
-			})
-			return
-		}
+		c.JSON(http.StatusUnprocessableEntity, gin.H{	
+			"error": err.Error(),
+		})
+		return
 	}
 
 	validate = validator.New()
@@ -45,19 +42,9 @@ func LoginHandler(c *gin.Context) {
 			return
 		 }
 	}
-	
-	// Passed validation
-	// Check record in DB
-	res := db.Connect().Where("phone_number", i.PhoneNumber).First(u)
-	if res.Error != nil {
-		errs, ok := customError(res.Error.Error())
-		if !ok {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": errs,
-			})
-			return
-		}
-	}
+	u.PhoneNumber = i.PhoneNumber
+	u.Password = i.Password
+	u.AuthUser()
 
 	ok := validateUser(u,i)
 	if !ok {
@@ -67,19 +54,17 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	c.Header("Authorization", "bearer " + token)
-
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"user": gin.H{
 			"id": u.ID,
-			"phoneNumber": u.PhoneNumber,
+			"phoneNumber":u.PhoneNumber,
+			// "token":r,
 		},
 	})
 }	
 
-func validateUser(u *User, i *LoginInput) bool {
-	// i.Password = HashPassword(i.Password)
+func validateUser(u *models.User, i *LoginInput) bool {
 	if u.Password == i.Password {
 		return true
 	}

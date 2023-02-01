@@ -11,7 +11,7 @@ const (
 	port = "5432"
 	user = "jkemboe"
 	password = "commandme007!@~"
-	dbname = "sportsapp_db"
+	dbname = "pinacle_db"
 )
 
 func setEnv() {

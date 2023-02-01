@@ -9,33 +9,30 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"go-auth/go-auth-api/env" // load environment variables
+	"go-auth/go-auth-api/env"             // load environment variables
 	h "go-auth/go-auth-api/handlers/auth" // load auth handlers
 	r "go-auth/go-auth-api/routes"        // load routes
-	"go-auth/go-auth-api/utils/faker" // load faker
+	"go-auth/go-auth-api/models"        // load models
+	"go-auth/go-auth-api/utils/faker"     // load faker
 
 	"github.com/stretchr/testify/assert"
 )
 
-
 // Test can register new user
 func TestNewUserRegistration(t *testing.T) {
 	url := 	env.GetDevAppUrl()
+	models.ConnectDB()
 	router := r.SetupRouter()
 
 	w := httptest.NewRecorder()
 	// Create user from User Struct
-	u := &h.User{
+	i := &h.RegistrationInput{
 		PhoneNumber: faker.PhoneNumber(),
 		Password: "j",
 	}
-	// User created json message
-	message := h.Message{
-		ValidationErrMsg: "Validation Error: Unproccessable Content",
-		SuccessMessage: "201 Created",
-	}
+	
 	// json encode
-	e, err := json.Marshal(&u)
+	e, err := json.Marshal(&i)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -46,7 +43,7 @@ func TestNewUserRegistration(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 201, w.Code, "Should return 201 status code after user is created")
-	assert.Equal(t, message.SuccessMessage, w.Result().Status, "Should contain 'User Created' success/status message" )
+	assert.Equal(t, "201 Created", w.Result().Status, "Should contain 'User Created' success/status message" )
 	assert.Equal(t, "bearer jwt_token", w.Header().Get("Authorization"), "Should return populated Authorization header if authenticated")
 }
 

@@ -6,14 +6,17 @@ import (
 	auth "go-auth/go-auth-api/handlers/auth"
 
 	l "go-auth/go-auth-api/handlers"
+	
 )
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
-	r.GET("/", l.LandingHandler)
-	r.POST("/api/v1/register", auth.RegistrationHandler)
-	r.POST("/api/v1/login", auth.LoginHandler)
+	public := r.Group("/api")
+
+	public.GET("/", l.LandingHandler)
+	public.POST("/v1/register", auth.Register)
+	public.POST("/v1/login", auth.LoginHandler)
 
 	return r
 }

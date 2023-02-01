@@ -8,17 +8,19 @@ import (
 
 	h "go-auth/go-auth-api/handlers"
 	r "go-auth/go-auth-api/routes"
+	"go-auth/go-auth-api/models"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // Test can load/view landing page with appropriate message
 func TestLanding(t *testing.T) {
+	models.ConnectDB()
 	router := r.SetupRouter()
 	
 	w := httptest.NewRecorder()
 	
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, _ := http.NewRequest("GET", "/api/", nil)
 	router.ServeHTTP(w, req)
 
 	message := h.Message{Message: h.WelcomeMessage}
