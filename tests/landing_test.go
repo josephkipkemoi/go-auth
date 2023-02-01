@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	h "go-auth/go-auth-api/handlers"
+	h "go-auth/go-auth-api/controllers"
 	r "go-auth/go-auth-api/routes"
 	"go-auth/go-auth-api/models"
 

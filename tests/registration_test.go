@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"go-auth/go-auth-api/env"             // load environment variables
-	h "go-auth/go-auth-api/handlers/auth" // load auth handlers
+	h "go-auth/go-auth-api/controllers/auth" // load auth handlers
 	r "go-auth/go-auth-api/routes"        // load routes
 	"go-auth/go-auth-api/models"        // load models
 	"go-auth/go-auth-api/utils/faker"     // load faker

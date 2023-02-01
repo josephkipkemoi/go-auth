@@ -3,9 +3,9 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
-	auth "go-auth/go-auth-api/handlers/auth"
+	auth "go-auth/go-auth-api/controllers/auth"
 
-	l "go-auth/go-auth-api/handlers"
+	l "go-auth/go-auth-api/controllers"
 	
 )
 
