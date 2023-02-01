@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -62,6 +64,9 @@ func RegistrationHandler(c *gin.Context) {
 		})	
 		return
 	}
+
+	p := HashPassword(u.Password)
+	u.Password = p
 	// Data Passed validation
 	// Store to db
 	res := db.Connect().Create(&u)
@@ -114,4 +119,9 @@ func customError(err string) ([]string, bool) {
 		return errs, false
 	}
 	return errs, true
+}
+
+func HashPassword(s string) string {
+	p := sha256.Sum256([]byte(s))
+	return hex.EncodeToString(p[:])
 }

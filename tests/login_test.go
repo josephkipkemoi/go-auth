@@ -23,12 +23,12 @@ func TestUnauthenticatedUserCannotLogin(t *testing.T) {
 
 	user := factory.MakeUser()
 	
-	u := &h.User{
+	i := &h.LoginInput{
 		PhoneNumber: int(user.PhoneNumber),
-		Password: string(user.Password) + "pass",
+		Password: string(user.Password) + "Pass",
 	}
 
-	d, err := json.Marshal(u)
+	d, err := json.Marshal(i)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -51,16 +51,15 @@ func TestAuthenticatedUserCanLogIn(t *testing.T) {
 
 	user := factory.MakeUser()
 	
-	u := &h.User{
+	i := &h.LoginInput{
 		PhoneNumber: int(user.PhoneNumber),
 		Password: string(user.Password),
 	}
 
-	d, err := json.Marshal(u)
+	d, err := json.Marshal(i)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	body := bytes.NewReader(d)
 
 	// // user request
@@ -68,6 +67,6 @@ func TestAuthenticatedUserCanLogIn(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, "application/json", w.Header().Get("Content-Type"), "Should have application/json header set")
-	assert.Equal(t, http.StatusNoContent, w.Code, "Should return success code (200): User found and Match records")
+	assert.Equal(t, http.StatusOK, w.Code, "Should return success code (200): User found and Match records")
 	assert.Equal(t, "bearer jwt_token", w.Header().Get("Authorization"), "Should have authorization header once user is logged in")
 }
