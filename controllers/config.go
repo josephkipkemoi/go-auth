@@ -34,5 +34,4 @@ func init() {
 
 func main(){
 	Validate =	validator.New()
-
 }

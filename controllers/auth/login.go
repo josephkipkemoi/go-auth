@@ -9,6 +9,7 @@ import (
 
 	// db "go-auth/go-auth-api/database"
 	"go-auth/go-auth-api/models"
+	"go-auth/go-auth-api/utils/tokens"
 )
 
 type LoginInput struct {
@@ -54,12 +55,15 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
+	token := tokens.GenerateToken()
+
+	c.Header("Authorization", "bearer " + token)
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"user": gin.H{
 			"id": u.ID,
 			"phoneNumber":u.PhoneNumber,
-			// "token":r,
 		},
 	})
 }	

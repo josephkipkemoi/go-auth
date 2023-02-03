@@ -2,6 +2,7 @@ package auth
 
 import (
 	"go-auth/go-auth-api/models"
+	"go-auth/go-auth-api/utils/tokens"
 
 	"fmt"
 	"net/http"
@@ -16,7 +17,6 @@ type RegistrationInput struct {
 }
 
 var validate *validator.Validate
-var token string = "jwt_token"
 
 func Register(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
@@ -43,6 +43,8 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+	
+	token := tokens.GenerateToken()
 
 	c.Header("Authorization", "bearer " + token)
 	
@@ -52,7 +54,6 @@ func Register(c *gin.Context) {
 			"phoneNumber": u.PhoneNumber,
 			"createdAt": u.CreatedAt,
 		},
-		"token": token,
 	})
 }
 

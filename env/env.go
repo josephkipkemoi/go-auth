@@ -21,6 +21,8 @@ func setEnv() {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s	password=%s	dbname=%s sslmode=disable", host, port, user, password, dbname)
 	os.Setenv("GOAUTH_DB", psqlInfo)
 	os.Setenv("DB_NAME", dbname)
+	// Token Env
+	// os.Setenv("API_SECRET", "maasai")
 }
 
 // Get development app url

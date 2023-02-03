@@ -1,14 +1,15 @@
 package tokens
 
-import (
-	"go-auth/go-auth-api/models"
-)
-
-type Token struct {
-	User *models.User
-	JwtCode string
+func GenerateToken() string {
+	tk := "jwt_token"
+	return tk
 }
 
-func (t Token) GenerateToken() string {
+func ValidateToken() bool {
+	return false
+}
+
+func ExtractToken() string {
 	return ""
-} 
+}
+
