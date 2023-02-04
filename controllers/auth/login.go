@@ -7,9 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	// db "go-auth/go-auth-api/database"
 	"go-auth/go-auth-api/models"
 	"go-auth/go-auth-api/utils/tokens"
+	"go-auth/go-auth-api/controllers"
 )
 
 type LoginInput struct {
@@ -35,7 +35,7 @@ func LoginHandler(c *gin.Context) {
 	validate = validator.New()
 	e := validate.Struct(i)
 	if e != nil {
-		 errs, ok := validationErrors(e)
+		 errs, ok := controllers.ValidationErrors(e)
 		 if !ok {
 			c.JSON(http.StatusUnprocessableEntity, gin.H{
 				"error": errs,

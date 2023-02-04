@@ -27,6 +27,7 @@ func ConnectDB() {
 	}
 	Db.AutoMigrate(
 		&User{},
+		&JackpotMarket{},
 	)
 	DB = Db
 }
