@@ -70,3 +70,16 @@ func TestCanPostJackpotGames(t *testing.T) {
 	assert.Contains(t, w.Header().Get("Authorization"), "", "Should have valid jwt authorization header")
 	assert.Equal(t,http.StatusCreated, w.Code, "Should return resource created http status code")
 }
+
+func TestCanGetJackpotGamesByJackpotMarketId(t *testing.T) {
+	url := env.GetDevAppUrl()
+	r := routes.SetupRouter()
+	w := httptest.NewRecorder()
+
+	req := httptest.NewRequest("GET", url + "api/v1/jackpots/games?jp_id=1", nil)
+
+	r.ServeHTTP(w, req)
+
+	assert.Contains(t, w.Body.String(), `{"data"}`, "Should have right JSON Body")
+	assert.Equal(t, http.StatusOK, w.Code, "Should return success status code")
+}

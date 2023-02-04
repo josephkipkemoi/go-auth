@@ -116,3 +116,7 @@ func StoreGames(c *gin.Context) {
 		"data": data,
 	})
 }
+
+func ShowJackpotGames(c *gin.Context) {
+	
+}
