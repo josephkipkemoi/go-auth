@@ -18,6 +18,7 @@ func SetupRouter() *gin.Engine {
 	public.POST("/v1/register", auth.Register)
 	public.POST("/v1/login", auth.LoginHandler)
 	public.POST("v1/jackpots", controllers.StoreMarket)
+	public.POST("v1/jackpots/games", controllers.StoreGames)
 
 	return r
 }

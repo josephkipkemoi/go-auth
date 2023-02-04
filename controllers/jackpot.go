@@ -27,7 +27,6 @@ func StoreMarket(c *gin.Context) {
 
 	i := &JackpotMarketInput{}
 
-	// encoder(inputStruct,c.Request.Body) e
 	d := json.NewDecoder(c.Request.Body)
 	err := d.Decode(i)
 	if err != nil {
@@ -64,7 +63,56 @@ func StoreMarket(c *gin.Context) {
 	})
 }
 
+type JackpotGamesInput struct {
+	JackpotMarketID uint `validate:"required"`
+	HomeTeam string `validate:"required"`
+	AwayTeam string `validate:"required"`
+	HomeOdds float32 `validate:"required"`
+	DrawOdds float32 `validate:"required"`
+	AwayOdds float32 `validate:"required"`
+}
+
 func StoreGames(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
-	
+
+	j := &models.JackpotGames{}
+	i := &JackpotGamesInput{}
+
+	d := json.NewDecoder(c.Request.Body)
+	e := d.Decode(i)
+	if e != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"errors": e.Error(),
+		})
+		return
+	}
+
+	validate = validator.New()
+	err := validate.Struct(i)
+	errs, ok := ValidationErrors(err)
+	if !ok {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"error": errs,
+		})
+		return
+	}
+
+	j.JackpotMarketID = i.JackpotMarketID
+	j.HomeTeam = i.HomeTeam
+	j.AwayTeam = i.AwayTeam
+	j.HomeOdds = i.HomeOdds
+	j.DrawOdds = i.DrawOdds
+	j.AwayOdds = i.AwayOdds
+
+	data, er := j.SaveJackpotGames()
+	if er != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": er,
+		})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"data": data,
+	})
 }

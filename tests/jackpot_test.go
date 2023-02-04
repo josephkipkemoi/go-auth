@@ -47,7 +47,22 @@ func TestCanPostJackpotGames(t *testing.T) {
 	r := routes.SetupRouter()
 	w := httptest.NewRecorder()
 
-	req := httptest.NewRequest("POST", url + "api/v1/jackpots/games", nil)
+	i := controllers.JackpotGamesInput{
+		JackpotMarketID: 1,
+		HomeTeam: "Team A",
+		AwayTeam: "Team B",
+		HomeOdds: 3.35,
+		DrawOdds: 4.55,
+		AwayOdds: 3.85,
+	}
+	b,e := json.MarshalIndent(i, "", " ")
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	bodyReader := bytes.NewReader(b)
+
+	req := httptest.NewRequest("POST", url + "api/v1/jackpots/games", bodyReader)
 
 	r.ServeHTTP(w, req)
 

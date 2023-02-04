@@ -4,12 +4,12 @@ import "gorm.io/gorm"
 
 type JackpotGames struct {
 	gorm.Model
-	JackpotMarketID uint 
-	HomeTeam string
-	AwayTeam string
-	HomeOdds float32
-	DrawOdds float32
-	AwayOdds float32
+	JackpotMarketID uint `json:"jackpotMarketId"`
+	HomeTeam string `json:"homeTeam"`
+	AwayTeam string `json:"awayTeam"`
+	HomeOdds float32 `json:"homeOdds"`
+	DrawOdds float32 `json:"drawOdds"`
+	AwayOdds float32 `json:"awayOdds"`
 }
 
 // SaveJackpotGames methods takes the jackpotMarketID & saves in relation to JackpotMarket
