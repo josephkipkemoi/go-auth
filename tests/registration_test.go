@@ -12,7 +12,6 @@ import (
 	"go-auth/go-auth-api/env"             // load environment variables
 	h "go-auth/go-auth-api/controllers/auth" // load auth handlers
 	r "go-auth/go-auth-api/routes"        // load routes
-	"go-auth/go-auth-api/models"        // load models
 	"go-auth/go-auth-api/utils/faker"     // load faker
 
 	"github.com/stretchr/testify/assert"
@@ -21,7 +20,6 @@ import (
 // Test can register new user
 func TestNewUserRegistration(t *testing.T) {
 	url := 	env.GetDevAppUrl()
-	models.ConnectDB()
 	router := r.SetupRouter()
 
 	w := httptest.NewRecorder()

@@ -7,7 +7,6 @@ import (
 	"go-auth/go-auth-api/env"
 	h "go-auth/go-auth-api/controllers/auth" // load auth handlers
 	r "go-auth/go-auth-api/routes"        // load routes
-	"go-auth/go-auth-api/models"        // load routes
 	
 	"log"
 	"net/http"
@@ -16,9 +15,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 )
-func init(){
-	models.ConnectDB()
-}
+
 
 // TestUnauthenticatedUserCannotLogin tests that an unauthenticated user cannot log in
 func TestUnauthenticatedUserCannotLogin(t *testing.T) {

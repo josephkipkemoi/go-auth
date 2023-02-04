@@ -7,7 +7,7 @@ import (
 
 type User struct {
 	gorm.Model
-	PhoneNumber int64 `gorm:"unique;not null;" json:"phoneNumber"`
+	PhoneNumber int64 `gorm:"not null;" json:"phoneNumber"`
 	Password string `gorm:"size:255;not null;" json:"password"`
 }	
 
