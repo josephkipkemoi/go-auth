@@ -94,9 +94,23 @@ func TestCanUpdateJackpotGame(t *testing.T) {
 	r := routes.SetupRouter()
 	w := httptest.NewRecorder()
 
-	req := httptest.NewRequest("PATCH", url + "api/v1/jackpots/games/patch?id=1", nil)
+	i := controllers.UpdateJackpotGameInput{
+		HomeTeam: "A",
+		AwayTeam: "B",
+		HomeOdds: 1.2,
+		DrawOdds: 1.3,
+		AwayOdds: 1.5,
+	}
+
+	b,e := json.MarshalIndent(i, "", " ")
+	if e != nil {
+		log.Fatal(e)
+	}
+	bodyReader := bytes.NewReader(b)
+
+	req := httptest.NewRequest("PATCH", url + "api/v1/jackpots/games/patch?id=1", bodyReader)
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, "application/json", w.Header().Get("Content-Type"), "Should have content-type header set to application/json")
-	assert.Equal(t, http.StatusNoContent, w.Code, "Should return success status code")
+	assert.Equal(t, http.StatusOK, w.Code, "Should return success status code")
 }

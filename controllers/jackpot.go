@@ -16,6 +16,23 @@ type JackpotMarketInput struct {
 	JackpotMarketID uint `json:"marketId" validate:"required"`
 }
 
+type JackpotGamesInput struct {
+	JackpotMarketID uint `validate:"required"`
+	HomeTeam string `validate:"required"`
+	AwayTeam string `validate:"required"`
+	HomeOdds float32 `validate:"required"`
+	DrawOdds float32 `validate:"required"`
+	AwayOdds float32 `validate:"required"`
+}
+
+type UpdateJackpotGameInput struct {
+	HomeTeam string
+	AwayTeam string
+	HomeOdds float32
+	DrawOdds float32
+	AwayOdds float32
+}
+
 var validate *validator.Validate
 
 func StoreMarket(c *gin.Context) {
@@ -60,16 +77,7 @@ func StoreMarket(c *gin.Context) {
 	})
 }
 
-type JackpotGamesInput struct {
-	JackpotMarketID uint `validate:"required"`
-	HomeTeam string `validate:"required"`
-	AwayTeam string `validate:"required"`
-	HomeOdds float32 `validate:"required"`
-	DrawOdds float32 `validate:"required"`
-	AwayOdds float32 `validate:"required"`
-}
-
-func StoreGames(c *gin.Context) {
+func Store(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
 	j := &models.Jackpot{}
@@ -101,7 +109,7 @@ func StoreGames(c *gin.Context) {
 	j.DrawOdds = i.DrawOdds
 	j.AwayOdds = i.AwayOdds
 
-	data, er := j.SaveJpGames()
+	data, er := j.Save()
 	if er != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": er,
@@ -114,7 +122,7 @@ func StoreGames(c *gin.Context) {
 	})
 }
 
-func ShowJackpotGames(c *gin.Context) {
+func Show(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	
 	j := models.Jackpot{}
@@ -127,7 +135,7 @@ func ShowJackpotGames(c *gin.Context) {
 		return
 	}
 
-	data, e := j.GetJpGames(id)
+	data, e := j.Show(id)
 	if e != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": e,
@@ -137,5 +145,58 @@ func ShowJackpotGames(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": data,
+	})
+}
+
+func Update(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
+	j := models.Jackpot{}
+	i := &UpdateJackpotGameInput{}
+
+	d := json.NewDecoder(c.Request.Body)
+	er := d.Decode(i)
+	if er != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": er,
+		})
+		return
+	}
+
+	validate = validator.New()
+	v := validate.Struct(i)
+	str, ok := ValidationErrors(v)
+	if !ok {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"error": str,
+		})
+		return
+	}
+
+	q := c.Request.FormValue("id")
+	id,err := strconv.Atoi(q)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err,
+		})
+		return
+	}
+	
+	j.HomeTeam = i.HomeTeam
+	j.AwayTeam = i.AwayTeam
+	j.HomeOdds = i.HomeOdds
+	j.DrawOdds = i.DrawOdds
+	j.AwayOdds = i.AwayOdds
+	
+	da, e := j.Update(id)
+	if e != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": da,
 	})
 }

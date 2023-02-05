@@ -1,10 +1,13 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Jackpot struct {
 	gorm.Model
 	JackpotMarketID uint `json:"jackpotMarketId"`
+	FixtureID uint `json:"fixtureId"`
 	HomeTeam string `json:"homeTeam"`
 	AwayTeam string `json:"awayTeam"`
 	HomeOdds float32 `json:"homeOdds"`
@@ -12,7 +15,7 @@ type Jackpot struct {
 	AwayOdds float32 `json:"awayOdds"`
 }
 
-func (j *Jackpot) SaveJpGames() (*Jackpot, error) {
+func (j *Jackpot) Save() (*Jackpot, error) {
 	var err error
 
 	err = DB.Create(&j).Error
@@ -23,23 +26,22 @@ func (j *Jackpot) SaveJpGames() (*Jackpot, error) {
 	return j, nil
 }
 
-//GetJpGames gets jackpot games for the given jackpot market ID 
-func (j *Jackpot) GetJpGames(id int) ([]Jackpot, error) {
+func (j *Jackpot) Show(id int) ([]Jackpot, error) {
 	var jpGames []Jackpot
 	var query = "SELECT * FROM \"jackpots\" WHERE jackpot_market_id=?"
 
-	tx := DB.Raw(query,id).Scan(&jpGames)
-	if tx.Error != nil {
-		return jpGames, tx.Error
+	if err := DB.Raw(query,id).Scan(&jpGames).Error; err != nil {
+		return []Jackpot{}, err
 	}
 
 	return jpGames, nil
 }
 
-func (j *Jackpot) UpdateJpGames(id int) (*Jackpot, error) {
-	tx := DB.Update("jackpots", j)
+func (j *Jackpot) Update(id int) (*Jackpot, error) {
+	tx := DB.Model(j).Where("id = ?", id).Updates(j)
 	if tx.Error != nil {
 		return &Jackpot{}, nil
 	}
+
 	return j, nil
 }
