@@ -21,5 +21,5 @@ func (j *JackpotGames) SaveJackpotGames() (*JackpotGames, error) {
 		return &JackpotGames{}, err
 	}
 
-	return &JackpotGames{}, nil
+	return j, nil
 }

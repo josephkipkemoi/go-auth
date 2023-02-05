@@ -31,7 +31,7 @@ func StoreMarket(c *gin.Context) {
 	err := d.Decode(i)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"errors": err.Error(),
+			"errors": "JSON Parse Error",
 		})
 		return
 	}
@@ -113,7 +113,7 @@ func StoreGames(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"data": data,
+		"data": *data,
 	})
 }
 

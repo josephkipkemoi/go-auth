@@ -11,15 +11,15 @@ import (
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
-
-	public := r.Group("/api")
+	
+	public := r.Group("/api/v1/")
 
 	public.GET("/", controllers.LandingHandler)
-	public.POST("/v1/register", auth.Register)
-	public.POST("/v1/login", auth.LoginHandler)
-	public.POST("v1/jackpots", controllers.StoreMarket)
-	public.POST("v1/jackpots/games", controllers.StoreGames)
-	public.GET("v1/jackpots/games?jp_id=1", controllers.ShowJackpotGames)
+	public.POST("/register", auth.Register)
+	public.POST("/login", auth.LoginHandler)
+	public.POST("/jackpots", controllers.StoreMarket)
+	public.POST("/jackpots/games", controllers.StoreGames)
+	public.GET("/jackpots/games?jp_id=1", controllers.ShowJackpotGames)
 
 	return r
 }

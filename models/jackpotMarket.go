@@ -7,7 +7,7 @@ type JackpotMarket struct {
 	gorm.Model
 	Market string `gorm:"not null;" json:"market"`
 	MarketID uint 
-	JackpotGames []JackpotGames `gorm:"constraint:OnUpdate:CASCADE, onDelete: SET NULL;"`
+	JackpotGames []JackpotGames `gorm:"foreignKey:JackpotMarketID;constraint:OnUpdate:CASCADE, onDelete: SET NULL;"`
 }
 
 func (j *JackpotMarket) SaveJackpotMarket() (*JackpotMarket, error){
