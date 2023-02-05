@@ -2,12 +2,16 @@ package models
 
 import "gorm.io/gorm"
 
+const (
+	MegaJackpotMarketId uint = uint(201)
+	JackpotFiveMarketId
+)
 // JackpotMarket hasMany Jackpot games
 type JackpotMarket struct {
 	gorm.Model
 	Market string `gorm:"not null;" json:"market"`
-	MarketID uint 
-	JackpotGames []JackpotGames `gorm:"foreignKey:JackpotMarketID;constraint:OnUpdate:CASCADE, onDelete: SET NULL;"`
+	JackpotMarketID uint  `json:"jackpotMarketId" gorm:"foreignKey:id"`
+	JackpotGames []JackpotGames `json:"jackpotGames" gorm:"foreignKey:id"`
 }
 
 func (j *JackpotMarket) SaveJackpotMarket() (*JackpotMarket, error){

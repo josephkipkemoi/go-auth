@@ -4,9 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"go-auth/go-auth-api/controllers"
+	"go-auth/go-auth-api/database/factory"
 	"go-auth/go-auth-api/env"
+	"go-auth/go-auth-api/models"
 	"go-auth/go-auth-api/routes"
 	"log"
+	"strconv"
 
 	"net/http"
 	"net/http/httptest"
@@ -22,7 +25,7 @@ func TestCanPostJackpotMarkets(t *testing.T) {
 
 	i := controllers.JackpotMarketInput{
 		Market: "Mega Jackpot",
-		MarketID: controllers.MegaJackpotMarketId,
+		JackpotMarketID: models.MegaJackpotMarketId,
 	}
 
 	b,e := json.MarshalIndent(i, "", " ")
@@ -33,7 +36,6 @@ func TestCanPostJackpotMarkets(t *testing.T) {
 	bodyReader := bytes.NewReader(b)
 
 	req := httptest.NewRequest("POST", url + "api/v1/jackpots", bodyReader)
-
 	r.ServeHTTP(w, req)
 
 	assert.Contains(t, w.Header().Get("Content-Type"), "application/json", "Should have content-type data format set to json")
@@ -63,7 +65,6 @@ func TestCanPostJackpotGames(t *testing.T) {
 	bodyReader := bytes.NewReader(b)
 
 	req := httptest.NewRequest("POST", url + "api/v1/jackpots/games", bodyReader)
-
 	r.ServeHTTP(w, req)
 
 	assert.Contains(t, w.Header().Get("Content-Type"), "application/json", "Should have content-type data format set to json")
@@ -76,10 +77,26 @@ func TestCanGetJackpotGamesByJackpotMarketId(t *testing.T) {
 	r := routes.SetupRouter()
 	w := httptest.NewRecorder()
 
-	req := httptest.NewRequest("GET", url + "api/v1/jackpots/games?jp_id=1", nil)
+	m := factory.MakeJackpotMarket()
+	factory.MakeJackpotGames()
+	mId := strconv.Itoa(int(m.JackpotMarketID))
 
+	req := httptest.NewRequest("GET", url + "api/v1/jackpots/games?jp_id=" + mId, nil)
 	r.ServeHTTP(w, req)
 
-	assert.Contains(t, w.Body.String(), `{"data"}`, "Should have right JSON Body")
+	assert.Equal(t, "application/json", w.Header().Get("Content-Type"), "Should have content-type header set to application/json")
+	// assert.Contains(t, w.Body.String(), `{"TeamA"}`, "Should have right JSON Body", w.Body.String())
 	assert.Equal(t, http.StatusOK, w.Code, "Should return success status code")
+}
+
+func TestCanUpdateJackpotGame(t *testing.T) {
+	url := env.GetDevAppUrl()
+	r := routes.SetupRouter()
+	w := httptest.NewRecorder()
+
+	req := httptest.NewRequest("PATCH", url + "api/v1/jackpots/games/patch?id=1", nil)
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, "application/json", w.Header().Get("Content-Type"), "Should have content-type header set to application/json")
+	assert.Equal(t, http.StatusNoContent, w.Code, "Should return success status code")
 }

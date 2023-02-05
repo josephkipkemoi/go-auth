@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"go-auth/go-auth-api/models"
+	"strconv"
 
 	"net/http"
 
@@ -12,15 +13,10 @@ import (
 
 type JackpotMarketInput struct {
 	Market string `json:"market" binding:"required" validate:"required"`
-	MarketID uint `json:"marketId" validate:"required"`
+	JackpotMarketID uint `json:"marketId" validate:"required"`
 }
 
 var validate *validator.Validate
-
-const (
-	MegaJackpotMarketId uint = uint(1)
-	JackpotFiveMarketId
-)
 
 func StoreMarket(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
@@ -49,6 +45,7 @@ func StoreMarket(c *gin.Context) {
 
 	m := models.JackpotMarket{}
 	m.Market = i.Market
+	m.JackpotMarketID = i.JackpotMarketID
 
 	data, e := m.SaveJackpotMarket()
 	if e != nil {
@@ -75,7 +72,7 @@ type JackpotGamesInput struct {
 func StoreGames(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
-	j := &models.JackpotGames{}
+	j := &models.Jackpot{}
 	i := &JackpotGamesInput{}
 
 	d := json.NewDecoder(c.Request.Body)
@@ -104,7 +101,7 @@ func StoreGames(c *gin.Context) {
 	j.DrawOdds = i.DrawOdds
 	j.AwayOdds = i.AwayOdds
 
-	data, er := j.SaveJackpotGames()
+	data, er := j.SaveJpGames()
 	if er != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": er,
@@ -113,10 +110,32 @@ func StoreGames(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"data": *data,
+		"data": data,
 	})
 }
 
 func ShowJackpotGames(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
 	
+	j := models.Jackpot{}
+	q := c.Request.FormValue("jp_id")
+	id, err := strconv.Atoi(q)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err,
+		})
+		return
+	}
+
+	data, e := j.GetJpGames(id)
+	if e != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": e,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
 }

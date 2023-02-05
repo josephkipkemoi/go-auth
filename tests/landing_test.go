@@ -18,7 +18,7 @@ func TestLanding(t *testing.T) {
 	
 	w := httptest.NewRecorder()
 	
-	req, _ := http.NewRequest("GET", "/api/", nil)
+	req, _ := http.NewRequest("GET", "/api/v1/", nil)
 	router.ServeHTTP(w, req)
 
 	message := h.Message{Message: h.WelcomeMessage}

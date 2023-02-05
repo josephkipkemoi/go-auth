@@ -29,6 +29,8 @@ func ConnectDB() {
 		&User{},
 		&JackpotMarket{},
 		&JackpotGames{},
+		&Jackpot{},
 	)
+
 	DB = Db
 }
