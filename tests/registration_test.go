@@ -9,10 +9,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"go-auth/go-auth-api/env"             // load environment variables
-	h "go-auth/go-auth-api/controllers/auth" // load auth handlers
-	r "go-auth/go-auth-api/routes"        // load routes
-	"go-auth/go-auth-api/utils/faker"     // load faker
+	"go-auth-api/go-auth/env"             // load environment variables
+	h "go-auth-api/go-auth/controllers/auth" // load auth handlers
+	r "go-auth-api/go-auth/routes"        // load routes
+	"go-auth-api/go-auth/utils/faker"     // load faker
 
 	"github.com/stretchr/testify/assert"
 )

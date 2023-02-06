@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"go-auth/go-auth-api/models"
-	"go-auth/go-auth-api/utils/tokens"
-	"go-auth/go-auth-api/controllers"
+	"go-auth-api/go-auth/models"
+	"go-auth-api/go-auth/utils/tokens"
+	"go-auth-api/go-auth/controllers"
 
 	"net/http"
 
@@ -19,8 +19,6 @@ type RegistrationInput struct {
 var validate *validator.Validate
 
 func Register(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
-
 	i := &RegistrationInput{}
 	if err := c.ShouldBindJSON(i); err != nil {
 		errs, ok := controllers.ValidationErrors(err)

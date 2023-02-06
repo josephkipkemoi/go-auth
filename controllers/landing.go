@@ -13,7 +13,6 @@ var WelcomeMessage string = "Golang Auth API"
 func LandingHandler(c *gin.Context) {
 	message := Message{Message: WelcomeMessage}
 	
-	c.Header("Content-Type", "application/json")
 	c.JSON(200, gin.H{
 		"message": message.Message,
 	})

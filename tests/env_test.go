@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	_ "go-auth/go-auth-api/env"       // load environment variables
+	_ "go-auth-api/go-auth/env"       // load environment variables
 
 	"github.com/stretchr/testify/assert"
 )

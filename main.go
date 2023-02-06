@@ -1,16 +1,24 @@
 package main
 
 import (
-	"go-auth/go-auth-api/models" // load and connect to database
-	r "go-auth/go-auth-api/routes"    // setup router
+	"go-auth-api/go-auth/models" // load and connect to database
+	"go-auth-api/go-auth/routes"
+
+	// "github.com/gin-gonic/gin"
 )
 
+func init() {
+	// gin.SetMode("debug")
+}
 
 func main() {
+	var proxies []string
+	proxies = append(proxies, "ipv4")
+	
 	// Connect to Database
 	models.ConnectDB()
 	// Setup and start server
-	r := r.SetupRouter()
-	
+	r := routes.SetupRouter()
+	r.SetTrustedProxies(proxies)
 	r.Run(":8080")	
 }

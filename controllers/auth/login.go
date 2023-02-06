@@ -7,9 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	"go-auth/go-auth-api/models"
-	"go-auth/go-auth-api/utils/tokens"
-	"go-auth/go-auth-api/controllers"
+	"go-auth-api/go-auth/models"
+	"go-auth-api/go-auth/utils/tokens"
+	"go-auth-api/go-auth/controllers"
 )
 
 type LoginInput struct {
@@ -17,9 +17,7 @@ type LoginInput struct {
 	Password string `json:"password"`
 }
 
-func LoginHandler(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
-	
+func LoginHandler(c *gin.Context) {	
 	u := &models.User{}
 	i := &LoginInput{}
 
@@ -45,7 +43,7 @@ func LoginHandler(c *gin.Context) {
 	}
 	u.PhoneNumber = i.PhoneNumber
 	u.Password = i.Password
-	u.AuthUser()
+	// u.AuthUser()
 
 	ok := validateUser(u,i)
 	if !ok {

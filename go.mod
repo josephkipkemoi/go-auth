@@ -1,4 +1,4 @@
-module go-auth/go-auth-api
+module go-auth-api/go-auth
 
 go 1.19
 

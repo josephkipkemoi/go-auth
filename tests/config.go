@@ -1,5 +1,5 @@
 package tests
-import "go-auth/go-auth-api/models"  
+import "go-auth-api/go-auth/models"  
 
 func init() {
 	models.ConnectDB()

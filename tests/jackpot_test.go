@@ -3,11 +3,11 @@ package tests
 import (
 	"bytes"
 	"encoding/json"
-	"go-auth/go-auth-api/controllers"
-	"go-auth/go-auth-api/database/factory"
-	"go-auth/go-auth-api/env"
-	"go-auth/go-auth-api/models"
-	"go-auth/go-auth-api/routes"
+	"go-auth-api/go-auth/controllers"
+	"go-auth-api/go-auth/database/factory"
+	"go-auth-api/go-auth/env"
+	"go-auth-api/go-auth/models"
+	"go-auth-api/go-auth/routes"
 	"log"
 	"strconv"
 
@@ -38,7 +38,7 @@ func TestCanPostJackpotMarkets(t *testing.T) {
 	req := httptest.NewRequest("POST", url + "api/v1/jackpots", bodyReader)
 	r.ServeHTTP(w, req)
 
-	assert.Contains(t, w.Header().Get("Content-Type"), "application/json", "Should have content-type data format set to json")
+	assert.Contains(t, w.Header().Get("Content-Type"), "application/json:charset=utf-8", "Should have content-type data format set to json")
 	assert.Contains(t, w.Header().Get("Authorization"), "", "Should have valid jwt authorization header")
 	assert.JSONEq(t,`{"status":"201 Created", "market": "Mega Jackpot"}`,w.Body.String(), "Should have JSON BODY")
 	assert.Equal(t,http.StatusCreated, w.Code, "Should return resource created http status code")
@@ -67,7 +67,7 @@ func TestCanPostJackpotGames(t *testing.T) {
 	req := httptest.NewRequest("POST", url + "api/v1/jackpots/games", bodyReader)
 	r.ServeHTTP(w, req)
 
-	assert.Contains(t, w.Header().Get("Content-Type"), "application/json", "Should have content-type data format set to json")
+	assert.Contains(t, w.Header().Get("Content-Type"), "application/json:charset=utf-8", "Should have content-type data format set to json")
 	assert.Contains(t, w.Header().Get("Authorization"), "", "Should have valid jwt authorization header")
 	assert.Equal(t,http.StatusCreated, w.Code, "Should return resource created http status code")
 }
@@ -84,7 +84,7 @@ func TestCanGetJackpotGamesByJackpotMarketId(t *testing.T) {
 	req := httptest.NewRequest("GET", url + "api/v1/jackpots/games?jp_id=" + mId, nil)
 	r.ServeHTTP(w, req)
 
-	assert.Equal(t, "application/json", w.Header().Get("Content-Type"), "Should have content-type header set to application/json")
+	assert.Equal(t, "application/json:charset=utf-8", w.Header().Get("Content-Type"), "Should have content-type header set to application/json")
 	// assert.Contains(t, w.Body.String(), `{"TeamA"}`, "Should have right JSON Body", w.Body.String())
 	assert.Equal(t, http.StatusOK, w.Code, "Should return success status code")
 }
@@ -111,6 +111,6 @@ func TestCanUpdateJackpotGame(t *testing.T) {
 	req := httptest.NewRequest("PATCH", url + "api/v1/jackpots/games/patch?id=1", bodyReader)
 	r.ServeHTTP(w, req)
 
-	assert.Equal(t, "application/json", w.Header().Get("Content-Type"), "Should have content-type header set to application/json")
+	assert.Equal(t, "application/json:charset=utf-8", w.Header().Get("Content-Type"), "Should have content-type header set to application/json")
 	assert.Equal(t, http.StatusOK, w.Code, "Should return success status code")
 }

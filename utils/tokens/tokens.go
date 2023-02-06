@@ -1,7 +1,11 @@
 package tokens
 
+import(
+)
+
 func GenerateToken() string {
 	tk := "jwt_token"
+	
 	return tk
 }
 

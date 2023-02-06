@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	h "go-auth/go-auth-api/controllers"
-	r "go-auth/go-auth-api/routes"
+	h "go-auth-api/go-auth/controllers"
+	r "go-auth-api/go-auth/routes"
 
 	"github.com/stretchr/testify/assert"
 )

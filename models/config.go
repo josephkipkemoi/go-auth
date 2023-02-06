@@ -7,7 +7,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"go-auth/go-auth-api/env"
+	"go-auth-api/go-auth/env"
 )
 
 var DB *gorm.DB

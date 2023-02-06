@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"go-auth/go-auth-api/models"
+	"go-auth-api/go-auth/models"
 	"strconv"
 
 	"net/http"
@@ -36,8 +36,6 @@ type UpdateJackpotGameInput struct {
 var validate *validator.Validate
 
 func StoreMarket(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
-
 	i := &JackpotMarketInput{}
 
 	d := json.NewDecoder(c.Request.Body)
@@ -78,8 +76,6 @@ func StoreMarket(c *gin.Context) {
 }
 
 func Store(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
-
 	j := &models.Jackpot{}
 	i := &JackpotGamesInput{}
 
@@ -122,9 +118,7 @@ func Store(c *gin.Context) {
 	})
 }
 
-func Show(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
-	
+func Show(c *gin.Context) {	
 	j := models.Jackpot{}
 	q := c.Request.FormValue("jp_id")
 	id, err := strconv.Atoi(q)
@@ -149,7 +143,6 @@ func Show(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
 
 	j := models.Jackpot{}
 	i := &UpdateJackpotGameInput{}
