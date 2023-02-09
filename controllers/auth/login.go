@@ -53,9 +53,15 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	token := tokens.GenerateToken()
-
-	c.Header("Authorization", "bearer " + token)
+	token,err := tokens.GenerateToken()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":err,
+		})
+		return
+	}
+	
+	c.Header("Authorization", "Bearer " + token)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",

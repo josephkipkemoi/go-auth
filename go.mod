@@ -7,6 +7,8 @@ require (
 	github.com/stretchr/testify v1.8.1
 )
 
+require github.com/golang-jwt/jwt/v4 v4.4.3 // direct
+
 // require github.com/joho/godotenv v1.4.0 // indirect
 
 require (

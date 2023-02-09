@@ -1,9 +1,10 @@
 package auth
 
 import (
+	"go-auth-api/go-auth/controllers"
 	"go-auth-api/go-auth/models"
 	"go-auth-api/go-auth/utils/tokens"
-	"go-auth-api/go-auth/controllers"
+	"log"
 
 	"net/http"
 
@@ -42,9 +43,16 @@ func Register(c *gin.Context) {
 		return
 	}
 	
-	token := tokens.GenerateToken()
+	token,err := tokens.GenerateToken()
+	log.Fatal(err)
 
-	c.Header("Authorization", "bearer " + token)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":err,
+		})
+		return
+	}
+	c.Header("Authorization", "Bearer " + token)
 	
 	c.JSON(201, gin.H{
 		"user": gin.H{
